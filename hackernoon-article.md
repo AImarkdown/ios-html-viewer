@@ -16,11 +16,15 @@
 
 ### Screen shot on iPhone 13 Pro
 
+- Shown with a local file uploaded.
+
+![](https://ios-html-viewer.netlify.app/images/screenshot-ios-html-viewer.jpg)
+
 ### The Problem
 
 - iOS's default file previewer strips away the essence of HTML. Some third-party apps try to fill the gap but often come with ads, subscriptions, or limited functionality.
 
-- **iOS HTML Viewer** is different. It's open source, ad-free, and privacy-focused. Your HTML files are processed locally, so your data stays on your device.
+- This frustrating lack of a simple, effective solution is what motivated me to create **iOS HTML Viewer**.
 
 ### Bonus for Devs: Syntax Highlighting
 
