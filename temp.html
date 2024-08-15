@@ -63,7 +63,6 @@
             display: none;
             color: red;
             margin-bottom: 20px;
-            font-size: 1.1em;
         }
 
         #homeScreenWarning {
@@ -88,7 +87,7 @@
         }
 
         /* Make buttons stack vertically with spacing on smaller screens */
-        @media (max-width: 600px) {
+        @media (max-width: 00px) {
             #uploadFile {
                 display: flex;
                 flex-direction: column;
@@ -255,7 +254,6 @@
             });
         }
 
-        // Detect operating system and if running from the home screen on iOS
         function detectOS() {
             const userAgent = navigator.userAgent || navigator.vendor || window.opera;
             const osNote = document.getElementById('osNote');
@@ -283,12 +281,22 @@
                 if (/Linux/.test(userAgent)) os = 'Linux';
             }
 
+            console.log('Detected OS:', os); // Log detected OS
+
+            // Check if osNote element exists
+            console.log('osNote element:', osNote);
+
             // Show OS note for non-iOS devices
             if (os !== 'iOS') {
-                osNote.innerHTML = <small>Note: You are using ${os}. This file has no specific advantage for you; it is meant for iPads and iPhones, but you can still use it.</small>;
+                osNote.innerHTML = `<small>Note: You are using ${os}. This file has no specific advantage for you; it is meant for iPads and iPhones, but you can still use it.</small>`;
                 osNote.style.display = 'block';
             }
         }
+
+        // Run OS detection on page load
+        window.onload = function () {
+            detectOS();
+        };
 
         // Reset source code section when a new file is uploaded
         function resetSourceCode() {
@@ -319,7 +327,7 @@
                     const fileContent = event.target.result;
 
                     // Update the render text with the file name and toggle visibility
-                    document.getElementById('renderText').textContent = Rendering "${file.name}";
+                    document.getElementById('renderText').textContent = `Rendering "${file.name}"`;
                     document.getElementById('uploadFile').style.display = 'none';
                     document.getElementById('refreshNote').style.display = 'block';
 
