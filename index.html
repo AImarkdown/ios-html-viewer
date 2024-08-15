@@ -23,6 +23,13 @@
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
+        /* Override Pico CSS */
+        main,
+        header {
+            max-width: 700px !important;
+            margin: 0 auto;
+        }
+
         .centeredContent {
             display: flex;
             justify-content: center;
@@ -62,7 +69,7 @@
         #osNote {
             display: none;
             color: red;
-            margin-bottom: 20px;
+            padding: 6px !important
         }
 
         #homeScreenWarning {
