@@ -6,22 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>iOS HTML Viewer</title>
 
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="manifest" href="/site.webmanifest">
-    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
-    <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="theme-color" content="#ffffff">
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2.0.6/css/pico.classless.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.pumpkin.min.css">
 
-    <!-- Prism.js CSS for syntax highlighting -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
         .centeredContent {
             display: flex;
@@ -31,31 +18,27 @@
             text-align: center;
         }
 
-        #refreshNote {
-            display: none;
+        .iphone {
+            width: 160px;
+            height: 160px;
         }
 
-        #osNote {
-            display: none;
-            color: red;
-            margin-bottom: 20px;
-            font-size: 1.1em;
+        @keyframes float {
+            0% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+
+            100% {
+                transform: translateY(0);
+            }
         }
 
-        #homeScreenWarning {
-            display: none;
-            color: red;
-            margin-top: 20px;
-            font-size: 1.1em;
-        }
-
-        pre {
-            background-color: #f4f4f4;
-            padding: 10px;
-            border-radius: 5px;
-            overflow-x: auto;
-            max-height: 300px;
-            white-space: pre-wrap;
+        .floating {
+            animation: float 3s ease-in-out infinite;
         }
 
         /* Add spacing to buttons */
@@ -77,11 +60,6 @@
                 margin: 10px 0;
             }
         }
-
-        .iphone {
-            width: 160px;
-            height: 160px;
-        }
     </style>
 </head>
 
@@ -96,104 +74,96 @@
     </header>
 
     <main>
-        <svg version="1.1" class="iphone" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-            x="0px" y="0px" viewBox="-300 0 1000 772" style="enable-background:new 0 0 1920 772;" xml:space="preserve">
-            <path class="animate" id="bezel" inkscape:label="#rect3843" fill="#FFFFFF" stroke="#000000" stroke-width="2"
-                stroke-linecap="square" stroke-linejoin="round" d="
-              M63.406,1C28.832,1,1,28.832,1,63.406v590.188C1,688.168,28.832,716,63.406,716h259.188C357.168,716,385,688.168,385,653.594V63.406
-              C385,28.832,357.168,1,322.594,1H63.406z M32,118h322v482H32V118z" />
-            <path class="animate" id="speaker" inkscape:label="#rect4379" fill="none" stroke="#000000" stroke-width="2"
-                stroke-linecap="square" stroke-linejoin="round" d="
-              M164.5,60h57c3.59,0,6.5,2.91,6.5,6.5l0,0c0,3.59-2.91,6.5-6.5,6.5h-57c-3.59,0-6.5-2.91-6.5-6.5l0,0C158,62.91,160.91,60,164.5,60z
-              " />
-            <path class="animate" id="button" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="square"
-                stroke-linejoin="round" d="M227,650
-              c0,18.778-15.222,34-34,34s-34-15.222-34-34s15.222-34,34-34S227,631.222,227,650z" />
-            <path class="animate" id="button1" inkscape:label="#rect4383" fill="none" stroke="#000000" stroke-width="2"
-                stroke-linecap="square" stroke-linejoin="round" d="
-              M187.277,639h11.445c2.915,0,5.277,2.363,5.277,5.277v11.445c0,2.915-2.363,5.277-5.277,5.277h-11.445
-              c-2.915,0-5.277-2.363-5.277-5.277v-11.445C182,641.363,184.363,639,187.277,639z" />
-        </svg>
-
-
-        <!-- OS Note: dynamically shown for non-iOS devices -->
-        <article id="osNote"></article>
-
-        <!-- Home screen warning for iOS apps running from home screen -->
-        <article id="homeScreenWarning"></article>
-
-        <imgxxx src="images/ioshtmlviewer.jpg" alt="">
+        <div class="centeredContent">
+            <svg version="1.1" class="iphone" xmlns="http://www.w3.org/2000/svg" viewBox="-300 0 1000 772">
+                <path class="animate" id="bezel" fill="#FFFFFF" stroke="#000000" stroke-width="2"
+                    stroke-linecap="square" stroke-linejoin="round" d="
+            M63.406,1C28.832,1,1,28.832,1,63.406v590.188C1,688.168,28.832,716,63.406,716h259.188C357.168,716,385,688.168,385,653.594V63.406
+            C385,28.832,357.168,1,322.594,1H63.406z M32,118h322v482H32V118z" />
+                <path class="animate" id="speaker" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="square"
+                    stroke-linejoin="round" d="
+            M164.5,60h57c3.59,0,6.5,2.91,6.5,6.5l0,0c0,3.59-2.91,6.5-6.5,6.5h-57c-3.59,0-6.5-2.91-6.5-6.5l0,0C158,62.91,160.91,60,164.5,60z
+            " />
+                <path class="animate" id="button" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="square"
+                    stroke-linejoin="round" d="
+            M227,650c0,18.778-15.222,34-34,34s-34-15.222-34-34s15.222-34,34-34S227,631.222,227,650z" />
+                <path class="animate" id="button1" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="square"
+                    stroke-linejoin="round" d="
+            M187.277,639h11.445c2.915,0,5.277,2.363,5.277,5.277v11.445c0,2.915-2.363,5.277-5.277,5.277h-11.445
+            c-2.915,0-5.277-2.363-5.277-5.277v-11.445C182,641.363,184.363,639,187.277,639z" />
+            </svg>
 
             <h4>Break Free from iOS Restrictions</h4>
             <ul>
                 <li>Enjoy full interactivity with your local HTML content, just like on a desktop or Android device</li>
                 <li>Bypass iOS serious limitations that prevent easy local HTML file viewing</li>
             </ul>
+        </div>
 
+        <hr>
+        <article id="uploadFile" class="centeredContent">
+            <input type="file" id="fileInput">
+            <button id="viewButton">View Rendered HTML</button>
+            <button id="viewSourceButton">View Source Code</button>
+            <button id="hideSourceButton" style="display: none;">Hide Source Code</button>
+        </article>
+
+        <div id="refreshNote" class="centeredContent" style="display: none;">
             <hr>
-            <article id="uploadFile">
-                <input type="file" id="fileInput">
-                <button id="viewButton">View Rendered HTML</button>
-                <button id="viewSourceButton">View Source Code</button>
-                <button id="hideSourceButton" style="display: none;">Hide Source Code</button>
-            </article>
-
-            <div id="refreshNote">
-                <hr>
-                <article>
-                    <strong><span id="renderText" aria-busy="true">Rendering Page</span></strong>
-                    <hr>
-                    Refresh your browser to upload another file.
-                </article>
-            </div>
-
-            <div id="sourceCodeSection" style="display: none;">
-                <h3>Source Code:</h3>
-                <pre><code id="sourceCode" class="language-html"></code></pre>
-            </div>
-
-            <hr>
-
             <article>
-                <small>
-                    Security Notice: Your uploaded HTML file stays on your device and is processed entirely within your
-                    browser,
-                    ensuring your privacy and security are fully protected.
-                </small>
+                <strong><span id="renderText" aria-busy="true">Rendering Page</span></strong>
+                <hr>
+                Refresh your browser to upload another file.
             </article>
-    </main>
+        </div>
 
+        <div id="sourceCodeSection" class="centeredContent" style="display: none;">
+            <h3>Source Code:</h3>
+            <pre><code id="sourceCode" class="language-html"></code></pre>
+        </div>
+
+        <hr>
+
+        <article class="centeredContent">
+            <small>
+                Security Notice: Your uploaded HTML file stays on your device and is processed entirely within your
+                browser,
+                ensuring your privacy and security are fully protected.
+            </small>
+        </article>
+    </main>
 
     <footer class="centeredContent">
         <div>
-            <p> <small>Created: August 14, 2024<span id="actualDate"></span> </small></p>
-            <img src="images/canada.png" alt="Flag of Canada">
-            <a href="https://github.com/AImarkdown/ios-html-viewer"><img width="24" src="images/github-logo.png"
-                    alt=""></a>
-
-            <img src="https://api.netlify.com/api/v1/badges/a1113b99-c42e-4872-b19b-79f742c56198/deploy-status" alt="">
-            <p><small>• Open Source by <a href="https://simplertasks.com">SimplerTasks Company</a>
-                    •</small></p>
+            <p><small>Created: August 14, 2024</small></p>
+            <p><small>• Open Source by <a href="https://simplertasks.com">SimplerTasks Company</a> •</small></p>
         </div>
-
     </footer>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
+    <script>
+        var path = $(".animate");
+        path.each(function () {
+            var length = this.getTotalLength();
+            var dashArray = length + ", " + length;
+            var dashOffset = length;
+            $(this).css({ "stroke-dasharray": dashArray, "stroke-dashoffset": dashOffset });
+        });
+        setTimeout(function () {
+            $('.animate').css({ "stroke-dashoffset": "0", "-webkit-transition": "stroke-dashoffset 3s ease-in-out, fill 3s ease-in-out" });
+        }, 1000);
+        setTimeout(function () {
+            $('#speaker').css({ "fill": "#fff" });
+            $('#bezel').css({ "fill": "#000" });
+            $('#button').css({ "fill": "#fff" });
+        }, 4000);
 
-
-    <!-- Modal for alerts -->
-    <dialog id="alertDialog">
-        <article>
-            <h2>Alert</h2>
-            <p id="alertMessage">Please select a file.</p>
-            <footer>
-                <button data-target="alertDialog">OK</button>
-            </footer>
-        </article>
-    </dialog>
-
-    <!-- Prism.js JavaScript for syntax highlighting -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+        // Add floating animation after initial animations
+        setTimeout(function () {
+            $('svg.iphone').addClass('floating');
+        }, 4500); // Delay to start after all other animations are done
+    </script>
 
     <script>
         // Show the alert dialog with a custom message
@@ -211,41 +181,6 @@
             });
         }
 
-        // Detect operating system and if running from the home screen on iOS
-        function detectOS() {
-            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-            const osNote = document.getElementById('osNote');
-            const homeScreenWarning = document.getElementById('homeScreenWarning');
-            let os = 'Unknown';
-
-            // iOS detection
-            if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-                os = 'iOS';
-
-                // Detect if running in standalone mode (home screen app)
-                if (window.navigator.standalone === true) {
-                    homeScreenWarning.innerHTML = '<small>You are running this as a Home Screen app. That will work, but there is no way to refresh the page other than closing the app. It is better to run this in your browser.</small>';
-                    homeScreenWarning.style.display = 'block';
-                }
-            }
-            // Android detection
-            else if (/android/i.test(userAgent)) {
-                os = 'Android';
-            }
-            // Other operating systems (Windows, macOS, Linux, etc.)
-            else if (/Win|Mac|Linux/.test(userAgent)) {
-                if (/Win/.test(userAgent)) os = 'Windows';
-                if (/Mac/.test(userAgent)) os = 'macOS';
-                if (/Linux/.test(userAgent)) os = 'Linux';
-            }
-
-            // Show OS note for non-iOS devices
-            if (os !== 'iOS') {
-                osNote.innerHTML = `<small>Note: You are using ${os}. This file has no specific advantage for you; it is meant for iPads and iPhones, but you can still use it.</small>`;
-                osNote.style.display = 'block';
-            }
-        }
-
         // Reset source code section when a new file is uploaded
         function resetSourceCode() {
             document.getElementById('sourceCodeSection').style.display = 'none';
@@ -253,11 +188,6 @@
             document.getElementById('hideSourceButton').style.display = 'none';
             document.getElementById('sourceCode').textContent = ''; // Clear the previous source code
         }
-
-        // Run OS detection on page load
-        window.onload = function () {
-            detectOS();
-        };
 
         // Listen for file input change and reset the source code view
         document.getElementById('fileInput').addEventListener('change', function () {
@@ -324,23 +254,6 @@
             document.getElementById('viewSourceButton').style.display = 'inline-block';
             document.getElementById('hideSourceButton').style.display = 'none';
         });
-    </script>
-    <script>
-        var path = $(".animate");
-        path.each(function () {
-            var length = this.getTotalLength();
-            var dashArray = length + ", " + length;
-            var dashOffset = length;
-            $(this).css({ "stroke-dasharray": dashArray, "stroke-dashoffset": dashOffset });
-        });
-        setTimeout(function () {
-            $('.animate').css({ "stroke-dashoffset": "0", "-webkit-transition": "stroke-dashoffset 3s ease-in-out, fill 3s ease-in-out" });
-        }, 1000);
-        setTimeout(function () {
-            $('#speaker').css({ "fill": "#fff" });
-            $('#bezel').css({ "fill": "#000" });
-            $('#button').css({ "fill": "#fff" });
-        }, 4000);
     </script>
 
 </body>
