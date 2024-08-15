@@ -18,11 +18,22 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.pumpkin.min.css">
 
     <!-- Prism.js CSS for syntax highlighting -->
+    <!-- Prism.js CSS for syntax highlighting -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" rel="stylesheet">
+
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
+        /* Override Pico CSS */
+        main,
+        header {
+            max-width: 700px !important;
+            margin: 0 auto;
+        }
+
         .centeredContent {
             display: flex;
             justify-content: center;
@@ -62,7 +73,7 @@
         #osNote {
             display: none;
             color: red;
-            margin-bottom: 20px;
+            padding: 6px !important
         }
 
         #homeScreenWarning {
@@ -87,7 +98,7 @@
         }
 
         /* Make buttons stack vertically with spacing on smaller screens */
-        @media (max-width: 00px) {
+        @media (max-width: 700px) {
             #uploadFile {
                 display: flex;
                 flex-direction: column;
@@ -99,6 +110,11 @@
                 max-width: 300px;
                 margin: 10px 0;
             }
+        }
+
+        svg {
+            display: block;
+            margin: 0 auto;
         }
 
         .iphone {
