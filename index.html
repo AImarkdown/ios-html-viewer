@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iOS HTML Viewer</title>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2.0.6/css/pico.classless.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.pumpkin.min.css">
+
+    <!-- Prism.js CSS for syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet" />
+
+    <style>
+        .centeredContent {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        #refreshNote {
+            display: none;
+        }
+
+        #osNote {
+            display: none;
+            color: red;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+
+        #homeScreenWarning {
+            display: none;
+            color: red;
+            margin-top: 20px;
+            font-size: 1.1em;
+        }
+
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            max-height: 300px;
+            white-space: pre-wrap;
+        }
+
+        /* Add spacing to buttons */
+        #uploadFile button {
+            margin: 10px 5px;
+        }
+
+        /* Make buttons stack vertically with spacing on smaller screens */
+        @media (max-width: 600px) {
+            #uploadFile {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            #uploadFile button {
+                width: 100%;
+                max-width: 300px;
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><img src="favicon-32x32.png" alt=""></li>
+                <li><strong>iOS HTML Viewer</strong></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+
+        <!-- OS Note: dynamically shown for non-iOS devices -->
+        <article id="osNote"></article>
+
+        <!-- Home screen warning for iOS apps running from home screen -->
+        <article id="homeScreenWarning"></article>
+
+        <img src="https://i.aimarkdown.org/ioshtmlviewer.jpg" alt="">
+
+        <h2>Break Free from iOS Restrictions</h2>
+        <ul>
+            <li>Enjoy full interactivity with your local HTML content, just like on a desktop or Android device</li>
+            <li>Bypass iOS serious limitations that prevent easy local HTML file viewing</li>
+        </ul>
+
+        Just upload your HTML file and press a button to view or inspect the source code.
+
+        <hr>
+        <article id="uploadFile">
+            <input type="file" id="fileInput">
+            <button id="viewButton">View Rendered HTML</button>
+            <button id="viewSourceButton">View Source Code</button>
+            <button id="hideSourceButton" style="display: none;">Hide Source Code</button>
+        </article>
+
+        <div id="refreshNote">
+            <hr>
+            <article>
+                <strong><span id="renderText" aria-busy="true">Rendering Page</span></strong>
+                <hr>
+                Refresh your browser to upload another file.
+            </article>
+        </div>
+
+        <div id="sourceCodeSection" style="display: none;">
+            <h3>Source Code:</h3>
+            <pre><code id="sourceCode" class="language-html"></code></pre>
+        </div>
+
+        <hr>
+
+    </main>
+    <footer class="centeredContent">
+        <div id="footerDate">
+            <small>Created: August 14, 2024<span id="actualDate"></span> </small>
+        </div>
+        <p>
+            <sub><a href="https://simplertasks.com">SimplerTasks Company</a></sub>
+        </p>
+        <p>
+
+            Security Notice: Your uploaded HTML file stays on your device and is processed entirely within your browser,
+            ensuring your privacy and security are fully protected.
+        </p>
+    </footer>
+
+    <!-- Modal for alerts -->
+    <dialog id="alertDialog">
+        <article>
+            <h2>Alert</h2>
+            <p id="alertMessage">Please select a file.</p>
+            <footer>
+                <button data-target="alertDialog">OK</button>
+            </footer>
+        </article>
+    </dialog>
+
+    <!-- Prism.js JavaScript for syntax highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+
+    <script>
+        // Show the alert dialog with a custom message
+        function showAlert(message) {
+            const alertDialog = document.getElementById('alertDialog');
+            const alertMessage = document.getElementById('alertMessage');
+            alertMessage.textContent = message;
+            alertDialog.showModal();
+
+            // Close dialog on 'OK' button click
+            document.querySelectorAll('[data-target="alertDialog"]').forEach(function (element) {
+                element.addEventListener('click', function () {
+                    alertDialog.close();
+                });
+            });
+        }
+
+        // Detect operating system and if running from the home screen on iOS
+        function detectOS() {
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            const osNote = document.getElementById('osNote');
+            const homeScreenWarning = document.getElementById('homeScreenWarning');
+            let os = 'Unknown';
+
+            // iOS detection
+            if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+                os = 'iOS';
+
+                // Detect if running in standalone mode (home screen app)
+                if (window.navigator.standalone === true) {
+                    homeScreenWarning.innerHTML = 'You are running this as a Home Screen app. That will work, but there is no way to refresh the page other than closing the app. It is better to run this in your browser.';
+                    homeScreenWarning.style.display = 'block';
+                }
+            }
+            // Android detection
+            else if (/android/i.test(userAgent)) {
+                os = 'Android';
+            }
+            // Other operating systems (Windows, macOS, Linux, etc.)
+            else if (/Win|Mac|Linux/.test(userAgent)) {
+                if (/Win/.test(userAgent)) os = 'Windows';
+                if (/Mac/.test(userAgent)) os = 'macOS';
+                if (/Linux/.test(userAgent)) os = 'Linux';
+            }
+
+            // Show OS note for non-iOS devices
+            if (os !== 'iOS') {
+                osNote.innerHTML = `Note: You are using ${os}. This file has no specific advantage for you; it is meant for iPads and iPhones, but you can still use it.`;
+                osNote.style.display = 'block';
+            }
+        }
+
+        // Reset source code section when a new file is uploaded
+        function resetSourceCode() {
+            document.getElementById('sourceCodeSection').style.display = 'none';
+            document.getElementById('viewSourceButton').style.display = 'inline-block';
+            document.getElementById('hideSourceButton').style.display = 'none';
+            document.getElementById('sourceCode').textContent = ''; // Clear the previous source code
+        }
+
+        // Run OS detection on page load
+        window.onload = function () {
+            detectOS();
+        };
+
+        // Listen for file input change and reset the source code view
+        document.getElementById('fileInput').addEventListener('change', function () {
+            resetSourceCode();
+        });
+
+        document.getElementById('viewButton').addEventListener('click', function () {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = function (event) {
+                    const fileContent = event.target.result;
+
+                    // Update the render text with the file name and toggle visibility
+                    document.getElementById('renderText').textContent = `Rendering "${file.name}"`;
+                    document.getElementById('uploadFile').style.display = 'none';
+                    document.getElementById('refreshNote').style.display = 'block';
+
+                    // Wait 5 seconds before rendering the content
+                    setTimeout(function () {
+                        // Replace the entire document with the uploaded HTML content
+                        document.open();
+                        document.write(fileContent);
+                        document.close();
+                    }, 5000); // 5000ms = 5 seconds
+                };
+
+                reader.readAsText(file);
+            } else {
+                showAlert('Please select a file first!');
+            }
+        });
+
+        document.getElementById('viewSourceButton').addEventListener('click', function () {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = function (event) {
+                    const fileContent = event.target.result;
+
+                    // Display the source code with syntax highlighting
+                    const sourceCodeElement = document.getElementById('sourceCode');
+                    sourceCodeElement.textContent = fileContent;
+                    Prism.highlightElement(sourceCodeElement); // Highlight the code
+                    document.getElementById('sourceCodeSection').style.display = 'block';
+                    document.getElementById('viewSourceButton').style.display = 'none';
+                    document.getElementById('hideSourceButton').style.display = 'inline-block';
+                };
+
+                reader.readAsText(file);
+            } else {
+                showAlert('Please select a file first!');
+            }
+        });
+
+        document.getElementById('hideSourceButton').addEventListener('click', function () {
+            document.getElementById('sourceCodeSection').style.display = 'none';
+            document.getElementById('viewSourceButton').style.display = 'inline-block';
+            document.getElementById('hideSourceButton').style.display = 'none';
+        });
+    </script>
+
+</body>
+
+</html>
