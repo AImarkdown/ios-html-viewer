@@ -1,14 +1,26 @@
-## iOS's HTML Preview Woes? Solved. Open Source. Ad-Free.
+# iOS's Local HTML Preview Woes? Solved. Open Source. Ad-Free.
 
-Let's face it, iOS's built-in HTML preview is a letdown. External CSS? Gone. JavaScript? Nope. You're left with a static, lifeless version of your content.
+### Introduction
 
-Enter **iOS HTML Viewer**, your new best friend. This simple yet powerful tool lets you render HTML files **with complete CSS and JavaScript support**, right on your iPhone or iPad. It's like having a mini-browser in your pocket.
+- Let's face it, iOS's built-in HTML preview is a letdown. External CSS? Gone. JavaScript? Nope. You're left with a static, lifeless version of your content.
+- Enter **iOS HTML Viewer**, your new best friend. This simple yet powerful tool lets you render HTML files **with complete CSS and JavaScript support**, right on your iPhone or iPad. It's like having a mini-browser in your pocket.
+
+### In a Hurry?
+
+- Link to file
+
+  - https://ios-html-viewer.netlify.app/
+
+- Source Code Github Gist
+  - https://gist.github.com/AImarkdown/1e9ecc6d2120518b6841c6f997a91f26
+
+### Screen shot on iPhone 13 Pro
 
 ### The Problem
 
-iOS's default file previewer strips away the essence of HTML. Some third-party apps try to fill the gap but often come with ads, subscriptions, or limited functionality.
+- iOS's default file previewer strips away the essence of HTML. Some third-party apps try to fill the gap but often come with ads, subscriptions, or limited functionality.
 
-**iOS HTML Viewer** is different. It's open source, ad-free, and privacy-focused. Your HTML files are processed locally, so your data stays on your device.
+- **iOS HTML Viewer** is different. It's open source, ad-free, and privacy-focused. Your HTML files are processed locally, so your data stays on your device.
 
 ### Bonus for Devs: Syntax Highlighting
 
@@ -34,3 +46,7 @@ This project is licensed under the MIT License, so feel free to fork, modify, an
 **Credits:**
 
 While AI (ChatGPT, Grammarly, Gemini) played a significant role in authoring and refining this article, the guidance, core ideas, and final touches remain distinctly human. Oh, and the header image? That's ChatGPT's handiwork too.
+
+### HTML Source Code
+
+https://gist.github.com/AImarkdown/1e9ecc6d2120518b6841c6f997a91f26
